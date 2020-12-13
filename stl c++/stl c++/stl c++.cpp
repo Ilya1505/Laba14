@@ -4,8 +4,10 @@
 #include "stdafx.h"
 #include <Conio.h>
 #include<Windows.h>
-#include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -45,10 +47,6 @@ public:
 		cout << "Размер элемента: " << sizeof(value) << " байт" << endl;
 	}
 };
-
-
-
-
 
 class avtoshop// абстрактный класс
 {
@@ -278,8 +276,35 @@ public:
 		cout << "текущее количество: " << count << endl;
 		return count;
 	}
-	friend void operator<<(ostream &o, technika t);
-	friend technika operator>>(istream &o, technika &t);
+	void Print()// функкция вывода данных
+	{
+		cout << endl << "Марка: " << name << endl;
+		cout << "Цвет: " << color << endl;
+		cout << "Год выпуска: " << year << endl;
+		cout << "Цена: ";
+		printf("%.4lf\n", price);
+		cout << "Количество: " << count << endl;
+	}
+	void Read()// функция ввода данных
+	{
+		fflush(stdin);
+		cout << "Марка: ";
+		getline(cin, name);
+		if (name == "") throw exception("Введена пустая строка марки!!!");
+		fflush(stdin);
+		cout << "Цвет: ";
+		getline(cin, color);
+		if (color == "") throw exception("Введена пустая строка цвета!!!");
+		cout << "Год выпуска: ";
+		cin >> year;
+		if (year<2000 || year>2020) throw exception("Введен неккоректный год выпуска!!!");
+		cout << "Цена: ";
+		cin >> price;
+		if (price <= 0) throw exception("Введена неккоректная цена!!!");
+		cout << "Количесвто: ";
+		cin >> count;
+		if (count <= 0) throw exception("Введено неккоректное количество!!!");
+	}
 	void addTov() override
 	{
 		count++;
@@ -290,36 +315,6 @@ public:
 		zapravka();
 	}
 };
-void operator<<(ostream &o, technika t)// функкция вывода данных
-{
-	cout << endl << "Марка: " << t.name << endl;
-	cout << "Цвет: " << t.color << endl;
-	cout << "Год выпуска: " << t.year << endl;
-	cout << "Цена: ";
-	printf("%.4lf\n", t.price);
-	cout << "Количество: " << t.count << endl;
-}
-technika operator >>(istream &o, technika &t)// функция ввода данных
-{
-	fflush(stdin);
-	cout << "Марка: ";
-	getline(cin, t.name);
-	if (t.name == "") throw exception("Введена пустая строка марки!!!");
-	fflush(stdin);
-	cout << "Цвет: ";
-	getline(cin, t.color);
-	if (t.color == "") throw exception("Введена пустая строка цвета!!!");
-	cout << "Год выпуска: ";
-	cin >> t.year;
-	if (t.year<2000 || t.year>2020) throw exception("Введен неккоректный год выпуска!!!");
-	cout << "Цена: ";
-	cin >> t.price;
-	if (t.price <= 0) throw exception("Введена неккоректная цена!!!");
-	cout << "Количесвто: ";
-	cin >> t.count;
-	if (t.count <= 0) throw exception("Введено неккоректное количество!!!");
-	return t;
-}
 class cars :public technika// производный класс "машины" от класса "техника"
 {
 private:
@@ -487,47 +482,44 @@ public:
 		count += 2;
 		cout << "Добавлено 2 новых самолета" << endl;
 	}
-	friend void operator<<(ostream &o, plane p);// перегрузка оператора cout
-	friend plane operator>>(istream &o, plane &p);// перегрузка оператора cin
+	void Print()
+	{
+		cout << "самолет:" << endl;
+		cout << "Марка: " << name << endl;
+		cout << "Цвет: " << color << endl;
+		cout << "Год выпуска: " << year << endl;
+		cout << "Цена: ";
+		printf("%.4lf\n", price);
+		cout << "Количество: " << count << endl;
+		cout << "максимальная высота полета: " << MaxHeight << endl;
+		cout << "время налета: " << HourFly << "часов(а)" << endl;
+	}
+	void Read()
+	{
+		cout << "самолет:" << endl;
+		fflush(stdin);
+		cout << "Марка: ";
+		getline(cin, name);
+		if (name == "") throw exception("Введена пустая строка марки!!!");
+		fflush(stdin);
+		cout << "Цвет: ";
+		getline(cin, color);
+		if (color == "") throw exception("Введена пустая строка цвета!!!");
+		cout << "Год выпуска: ";
+		cin >> year;
+		if (year<2000 || year>2020) throw exception("Введен неккоректный год выпуска!!!");
+		cout << "Цена: ";
+		cin >> price;
+		if (price <= 0) throw exception("Введена неккоректная цена!!!");
+		cout << "Количесвто: ";
+		cin >> count;
+		if (count <= 0) throw exception("Введено неккоректное количество!!!");
+		cout << "максимальная высота полета: ";
+		cin >> MaxHeight;
+		cout << "время налета (в часах): ";
+		cin >> HourFly;
+	}
 };
-void operator<<(ostream &o, plane p)// перегрузка оператора cout
-{
-	cout << "самолет:" << endl;
-	cout << "Марка: " << p.name << endl;
-	cout << "Цвет: " << p.color << endl;
-	cout << "Год выпуска: " << p.year << endl;
-	cout << "Цена: ";
-	printf("%.4lf\n", p.price);
-	cout << "Количество: " << p.count << endl;
-	cout << "максимальная высота полета: ";
-	cin >> p.MaxHeight;
-	cout << "время налета (в часах): ";
-	cin >> p.HourFly;
-}
-plane operator>>(istream &o, plane &p)// перегрузка оператора cin
-{
-	cout << "самолет:" << endl;
-	fflush(stdin);
-	cout << "Марка: ";
-	getline(cin, p.name);
-	if (p.name == "") throw exception("Введена пустая строка марки!!!");
-	fflush(stdin);
-	cout << "Цвет: ";
-	getline(cin, p.color);
-	if (p.color == "") throw exception("Введена пустая строка цвета!!!");
-	cout << "Год выпуска: ";
-	cin >> p.year;
-	if (p.year<2000 || p.year>2020) throw exception("Введен неккоректный год выпуска!!!");
-	cout << "Цена: ";
-	cin >> p.price;
-	if (p.price <= 0) throw exception("Введена неккоректная цена!!!");
-	cout << "Количесвто: ";
-	cin >> p.count;
-	if (p.count <= 0) throw exception("Введено неккоректное количество!!!");
-	cout << "максимальная высота полета: " << p.MaxHeight << endl;
-	cout << "время налета: " << p.HourFly << "часов(а)" << endl;
-	return p;
-}
 
 void addTov(avtoshop *ptr)
 {
@@ -538,90 +530,43 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	SetConsoleCP(1251);// подключение русскоязычного ввода/вывода
 	SetConsoleOutputCP(1251);
-	//класс машина:
-	engine dvs("св-01", 10, 100, 0, 400);
-	technika *tk = new technika(2020, "No_Name", "No_Color", 15000, 5);
-	cars *avto = new cars(dvs, 5, 2020, "No_Name", "No_Color", 1000, 8);
-	int a = 4;
-	Sizeof<int> size1(a);
-	size1.DataTypeSize();
-	tk->Zapravit();// вызов функции, вызывающей виртуальную функцию базового класса
-	*avto = *tk;// перегрузка оператора =
-	cout << *avto;
-	Sizeof<cars> size2(*avto);
-	size2.DataTypeSize();
-	bool f;
-	do{
-		f = false;
-		try{ cin >> *avto; }
-		catch (exception &ex)
-		{
-			cout << "Ошибка ввода: " << ex.what() << endl;
-			cout << "Повторите попытку ввода!" << endl;
-			f = true;
-		}
-	} while (f);
-	printf("\nДанные после ввода:");
-	cout << *avto;
-	int probeg = 0;
-	try{ probeg = avto->Drive(avto, 10); }
-	catch (MyException &ex)
+	
+	vector<technika> tk = {// создание и инициализация контейнера вектор
+		technika(2020, "миг-28", "белый", 450, 1),
+		technika(2020, "су-31", "белый", 400, 5),
+		technika(2020, "су-50", "белый", 500, 1),
+		plane(20000, 0, 2020, "як-01", "белый", 150, 5),
+		plane(10000, 0, 2020, "ил-10", "зеленый", 200, 8),
+		plane(10000, 0, 2020, "ту-200", "зеленый", 250, 8),
+		plane(10000, 0, 2020, "пе-2", "зеленый", 800, 4),
+	};
+	vector<technika>::iterator it;// объявление итератора
+	it = tk.begin();
+	cout << "Данные после инициализации:" << endl;
+	int i = 1;
+	for (it; it != tk.end(); it++)
 	{
-		cout << ex.what() << endl;
-		cout << "Код ошибки: " << ex.Code() << endl;
-		cout << "завершение работы программы!";
-		getch();
-		exit(1);
+		cout << "Техника номер " << i << endl;
+		it->Print();
+		i++;
 	}
-	avto->Zapravit();// функция, вызывающая функцию производного класса
-	printf("\nПробег после тест-драйва: ");
-	cout << probeg << endl;
-	try{ avto->Modern(100, 200, 500); }
-	catch (MyException &ex)
+	
+	sort(tk.begin(), tk.end(), [](technika &tk1, technika &tk2)// сортировка техники по цене
 	{
-		cout << ex.what() << endl;
-		cout << "Код ошибки: " << ex.Code() << endl;
-		cout << "завершение работы программы!";
-		getch();
-		exit(1);
-	}
-	printf("\nПосле модернизации:");
-	cout << *avto;
-	avto->technika::Sell();// вызов перегруженного метода базового класса
-	try{ avto->Sell(5); }
-	catch (exception &ex)
+		return tk1.GetPrice() > tk2.GetPrice();
+	});
+	cout << "После сортировки:" << endl;
+	it = tk.begin();
+	i = 1;
+	for (it; it != tk.end(); it++)
 	{
-		cout << ex.what() << endl;
-		cout << "завершение работы программы!";
-		getch();
-		exit(1);
+		cout << "Техника номер " << i << endl;
+		it->Print();
+		i++;
 	}
-	addTov(avto);
-	//класс самолет
-	plane pl(20000, 0, 2020, "No_Name", "No_Color", 150000, 5);
-	cout << pl;
-	do{
-		f = false;
-		try{ cin >> pl; }
-		catch (exception &ex)
-		{
-			cout << "Ошибка ввода: " << ex.what() << endl;
-			cout << "Повторите попытку ввода!" << endl;
-			f = true;
-		}
-	} while (f);
-	printf("\nДанные после ввода:");
-	cout << pl;
-	try{ pl.Fly(1); }
-	catch (exception &ex)
-	{
-		cout << ex.what() << endl;
-		cout << "завершение работы программы!";
-		getch();
-		exit(1);
-	}
-	cout << "Налет (в часах) после полета: " << pl.GetHour() << endl;
-	pl.Sell();
+	it = tk.begin();
+	for (it; it != tk.end(); it++)
+		it->Sell();
 	getch();
 	return 0;
 }
