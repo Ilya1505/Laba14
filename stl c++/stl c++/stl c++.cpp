@@ -564,9 +564,18 @@ int _tmain(int argc, _TCHAR* argv[])
 		it->Print();
 		i++;
 	}
-	it = tk.begin();
-	for (it; it != tk.end(); it++)
+	it = find_if(tk.begin(), tk.end(), [](technika &t1){
+		return t1.GetPrice() < 200;
+	});
+	if (it == tk.end())
+	{
+		cout << "Подходящей техники нет" << endl;
+	}
+	else
+	{
+		it->Print();
 		it->Sell();
+	}
 	getch();
 	return 0;
 }
