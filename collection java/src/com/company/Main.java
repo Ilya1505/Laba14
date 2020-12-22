@@ -20,15 +20,27 @@ public class Main {
         Collections.sort(massiv);
         System.out.println(System.lineSeparator()+"Данные после сортировки: ");
         Iterator<technika> it = massiv.iterator();
+        technika IterTk;
         while(it.hasNext()){
-            technika IterTk=it.next();
+            IterTk=it.next();
             System.out.println(IterTk);
         }
-//        System.out.println(pl);
-//        Zapravit(pl);
-//        pl.Fly(1);
-//        System.out.println("Налет (в часах) после полета: " + pl.GetHour());
-//        pl.Sell();
+        it = massiv.iterator();
+        String sellName="су50";
+        f=false;
+        while(it.hasNext())
+        {
+            IterTk=it.next();
+            if(IterTk.GetName()==sellName)
+            {
+                f=true;
+                IterTk.Sell();
+            }
+        }
+        if(!f)
+        {
+            System.out.println("Подходящей техники не найдено");
+        }
     }
     public static void AddTov(avtoShop tk)
     {
